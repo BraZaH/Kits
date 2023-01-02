@@ -1,11 +1,6 @@
-﻿using System;
-using CommandSystem;
-using Exiled.API.Enums;
-using Exiled.API.Features.Items;
-using Kits.Features;
-
-namespace Kits.Features
+﻿namespace Kits.Features
 {
+    using Exiled.API.Enums;
     public class AmmoStruct
     {
         public AmmoType Type { get; set; }
