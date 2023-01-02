@@ -104,7 +104,6 @@
   <ItemGroup>
     <Compile Include="Commands\KitCommand.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="EventHandler.cs" />
     <Compile Include="Features\AmmoStruct.cs" />
     <Compile Include="Features\ItemKit.cs" />
     <Compile Include="Main.cs" />
