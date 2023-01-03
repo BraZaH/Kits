@@ -40,6 +40,33 @@ namespace Kits
                         {"none", 2 }
                     }
                 }
+            },
+            {
+                "Pro", new ItemKit
+                {
+                    Items = new List<ItemType>()
+                    {
+                        ItemType.Coin,
+                        ItemType.Radio
+                    },
+                    Ammo = new List<AmmoStruct>()
+                    {
+                         new AmmoStruct()
+                         {
+                             Type = AmmoType.Nato556,
+                             Amount = 100
+                         },
+                         new AmmoStruct()
+                         {
+                             Type = AmmoType.Nato762,
+                             Amount = 10
+                         }
+                    },
+                    UserGroup = new Dictionary<string, int>()
+                    {
+                        {"owner", 2 }
+                    }
+                }
             }
         };
     }

@@ -24,6 +24,12 @@
             }
 
             Player _player = Player.Get(sender);
+            if (!Database.LiteDatabase.GetCollection<PlayerData>().Exists(e => e.UserID == _player.UserId))
+            {
+                Extension.AddPlayer(_player);
+                response = $"Usuario no registrado en la base de datos, intente nuevamente el comando";
+                return false;
+            }
             PlayerData _playerData = Database.LiteDatabase.GetCollection<PlayerData>().FindOne(e => e.UserID == _player.UserId);
 
             if(_player.Role.Side == Exiled.API.Enums.Side.Scp || _player.Role.Side == Exiled.API.Enums.Side.None || _player.Role.Side == Exiled.API.Enums.Side.Tutorial)
@@ -48,6 +54,11 @@
             if (_dispoKits.IsEmpty())
                 _dispoKits = "- No hay KITS disponibles -";
             string ErrResponse = $" <color=red>Kit inexistente o falta de argumentos, por favor eliga uno de los siguientes kits disponibles:</color>\n<color=green>{_dispoKits}</color>";
+            if(arguments.Count == 0)
+            {
+                response = ErrResponse;
+                return false;
+            }
 
             try
             {

@@ -8,22 +8,23 @@
     {
         public static void AddPlayer(Player ply)
         {
-            Dictionary<string, int> _avalibleKits = new Dictionary<string, int>();
-            foreach (var _kits in Main.Singleton.Config.Kits)
-            {
-                if (_kits.Value.UserGroup.ContainsKey(ply.GroupName) || _kits.Value.UserGroup.ContainsKey("none"))
-                {
-                    string _referenceUserGroup = string.Empty;
-                    if (_kits.Value.UserGroup.ContainsKey(ply.GroupName))
-                        _referenceUserGroup = ply.GroupName;
-                    else
-                        _referenceUserGroup = "none";
-                    _kits.Value.UserGroup.TryGetValue(_referenceUserGroup, out int _kitUses);
-                    _avalibleKits.Add(_kits.Key,_kitUses);
-                }
-            }
             try
             {
+                Dictionary<string, int> _avalibleKits = new Dictionary<string, int>();
+                if (ply.GroupName == null)
+                    ply.GroupName = "none";
+                foreach (var _kits in Main.Singleton.Config.Kits)
+                {
+                    if (_kits.Value.UserGroup.ContainsKey(ply.GroupName) || _kits.Value.UserGroup.ContainsKey("none"))
+                    {
+                        string _referenceGroupName = ply.GroupName;
+                        if (!_kits.Value.UserGroup.ContainsKey(ply.GroupName))
+                            _referenceGroupName = "none";
+
+                        _kits.Value.UserGroup.TryGetValue(_referenceGroupName, out int _kitUses);
+                        _avalibleKits.Add(_kits.Key, _kitUses);
+                    }
+                }
                 PlayerData pd = new PlayerData()
                 {
                     UserID = ply.UserId,
@@ -46,6 +47,8 @@
                 return;
             }
             PlayerData _player = Database.LiteDatabase.GetCollection<PlayerData>().FindOne(e => e.UserID == ply.UserId);
+            if (ply.GroupName == null)
+                ply.GroupName = "none";
             if(_player.GroupName != ply.GroupName)
             {
                 Database.LiteDatabase.GetCollection<PlayerData>().Delete(_player.UserID);
@@ -61,7 +64,7 @@
                     if(_kits.Value.UserGroup.ContainsKey(ply.GroupName) || _kits.Value.UserGroup.ContainsKey("none"))
                     {
                         string _referenceGroupName = ply.GroupName;
-                        if (!_kits.Value.UserGroup.ContainsKey(_referenceGroupName))
+                        if (!_kits.Value.UserGroup.ContainsKey(ply.GroupName))
                             _referenceGroupName = "none";
                         _kits.Value.UserGroup.TryGetValue(_referenceGroupName, out int _uses);
                         _kitsUses.Add(_kits.Key, _uses);
@@ -92,7 +95,7 @@
                 {
                     Main.Singleton.Config.Kits.TryGetValue(_kits.Key, out ItemKit _kitValue);
 
-                    string _referenceUserGroup = string.Empty;
+                    string _referenceUserGroup = player.GroupName;
                     if (_kitValue.UserGroup.ContainsKey(player.GroupName))
                         _referenceUserGroup = player.GroupName;
                     else
