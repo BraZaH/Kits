@@ -116,52 +116,59 @@
                 {
                     Kits.EventHandler.RoundKitUses.Add(_player.UserId, new List<string>() { { _kit} });
                 }
-                Timing.CallDelayed(0.02f, () => 
+                if (_itemKit.Candies.Count > 0)
                 {
-                    if (_itemKit.Candies.Count > 0)
+                    if (_itemKit.Items.Contains(ItemType.SCP330))
                     {
-                        if (Scp330Bag.TryGetBag(_player.ReferenceHub, out Scp330Bag bag))
+                        response = "<color=red>Kit roto</color><color=silver>, no se puede combinar el ItemType330 junto a añadir candies, se debe añadir los candies de forma individual</color>";
+                        return false;
+                    }
+                    if (Scp330Bag.TryGetBag(_player.ReferenceHub, out Scp330Bag bag))
+                    {
+                        foreach (CandyKindID candy in _itemKit.Candies)
                         {
-                            foreach (CandyKindID candy in _itemKit.Candies)
-                            {
-                                if (bag.Candies.Count >= 6)
-                                    break;
-                                bag.Candies.Add(candy);
-                                bag.ServerRefreshBag();
+                            if (bag.Candies.Count >= 6)
+                                break;
+                            bag.Candies.Add(candy);
+                            bag.ServerRefreshBag();
                                 
-                            }
-                        }
-                        else
-                        {
-                            if (_player.IsInventoryFull)
-                                _player.DropHeldItem();
-                            if (!_player.IsInventoryFull)
-                            {
-                                Scp330 scp330 = (Scp330)_player.AddItem(ItemType.SCP330);
-                                Timing.CallDelayed(0.02f, () =>
-                                {
-                                    CandyKindID _RemoveCandy = CandyKindID.None;
-                                    foreach (CandyKindID i in scp330.Candies)
-                                    {
-                                        _RemoveCandy = i;
-                                    }
-                                    foreach (CandyKindID candy in _itemKit.Candies)
-                                    {
-                                        scp330.AddCandy(candy);
-                                    }
-                                    scp330.RemoveCandy(_RemoveCandy);
-                                });
-                            }
                         }
                     }
-                });
+                    else
+                    {
+                        if (_player.IsInventoryFull)
+                            _player.DropHeldItem();
+                        if (!_player.IsInventoryFull)
+                        {
+                            Scp330 scp330 = (Scp330)_player.AddItem(ItemType.SCP330);
+                            Timing.CallDelayed(0.02f, () =>
+                            {
+                                CandyKindID _RemoveCandy = CandyKindID.None;
+                                foreach (CandyKindID i in scp330.Candies)
+                                {
+                                    _RemoveCandy = i;
+                                }
+                                foreach (CandyKindID candy in _itemKit.Candies)
+                                {
+                                    scp330.AddCandy(candy);
+                                }
+                                scp330.RemoveCandy(_RemoveCandy);
+                            });
+                        }
+                    }
+                }
                 Extension.SubstractUses(_player, _kit);
                 response = $"<color=green>Kit </color><color=lime>{_kit}</color><color=green> reclamado con exito.</color>";
                 return true;
             }
             else
             {
-                response = "<color=red>No tienes permisos para usar este KIT</color>";
+                string _avalibleRoles = string.Empty;
+                foreach (var group in _itemKit.UserGroup)
+                {
+                    _avalibleRoles += $"<color=orange>- </color><color=green>{group.Key}</color>";
+                }
+                response = $"<color=red>No tienes permisos para usar este KIT, Kit valido para los:</color>\n{_avalibleRoles}";
                 return false;
             }
         }
