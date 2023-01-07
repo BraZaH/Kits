@@ -5,6 +5,7 @@ using Exiled.API.Interfaces;
 using Exiled.API.Features;
 using Kits.Features;
 using System.IO;
+using InventorySystem.Items.Usables.Scp330;
 
 namespace Kits
 {
@@ -33,6 +34,11 @@ namespace Kits
                             Type = AmmoType.Nato556,
                             Amount = 200
                         }
+                    },
+                    Candys = new List<CandyKindID>()
+                    {
+                        CandyKindID.Rainbow,
+                        CandyKindID.Yellow
                     },
                     UserGroup = new Dictionary<string, int>()
                     {

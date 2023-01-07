@@ -7,6 +7,8 @@
     using Exiled.API.Features.Items;
     using Kits.Features;
     using Kits.Database;
+    using InventorySystem.Items.Usables.Scp330;
+    using MEC;
 
     [CommandHandler(typeof(ClientCommandHandler))]
     class KitCommand : ICommand
@@ -17,7 +19,7 @@
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if(Round.IsEnded || !Round.IsStarted)
+            if (Round.IsEnded || !Round.IsStarted)
             {
                 response = "<color=red>No puedes usar este comando cuando la partida no haya comenzado</color>";
                 return false;
@@ -114,6 +116,45 @@
                 {
                     Kits.EventHandler.RoundKitUses.Add(_player.UserId, new List<string>() { { _kit} });
                 }
+                Timing.CallDelayed(0.02f, () => 
+                {
+                    if (_itemKit.Candys.Count > 0)
+                    {
+                        if (Scp330Bag.TryGetBag(_player.ReferenceHub, out Scp330Bag bag))
+                        {
+                            foreach (CandyKindID candy in _itemKit.Candys)
+                            {
+                                if (bag.Candies.Count >= 6)
+                                    break;
+                                bag.Candies.Add(candy);
+                                bag.ServerRefreshBag();
+                                
+                            }
+                        }
+                        else
+                        {
+                            if (_player.IsInventoryFull)
+                                _player.DropHeldItem();
+                            if (!_player.IsInventoryFull)
+                            {
+                                Scp330 scp330 = (Scp330)_player.AddItem(ItemType.SCP330);
+                                Timing.CallDelayed(0.02f, () =>
+                                {
+                                    CandyKindID _RemoveCandy = CandyKindID.None;
+                                    foreach (CandyKindID i in scp330.Candies)
+                                    {
+                                        _RemoveCandy = i;
+                                    }
+                                    foreach (CandyKindID candy in _itemKit.Candys)
+                                    {
+                                        scp330.AddCandy(candy);
+                                    }
+                                    scp330.RemoveCandy(_RemoveCandy);
+                                });
+                            }
+                        }
+                    }
+                });
                 Extension.SubstractUses(_player, _kit);
                 response = $"<color=green>Kit </color><color=lime>{_kit}</color><color=green> reclamado con exito.</color>";
                 return true;

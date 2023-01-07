@@ -47,8 +47,18 @@
                 return;
             }
             PlayerData _player = Database.LiteDatabase.GetCollection<PlayerData>().FindOne(e => e.UserID == ply.UserId);
-            if (ply.GroupName == null)
-                ply.GroupName = "none";
+
+            foreach (var _Roles in TempRoles._TempRoles)
+            {
+                if (ply.RankName.Contains(_Roles.Key))
+                {
+                    Log.Info("Contains key");
+                    TempRoles._TempRoles.TryGetValue(_Roles.Key, out string _GroupName);
+                    ply.GroupName = _GroupName;
+                    break;
+                }
+            }
+
             if(_player.GroupName != ply.GroupName)
             {
                 Database.LiteDatabase.GetCollection<PlayerData>().Delete(_player.UserID);

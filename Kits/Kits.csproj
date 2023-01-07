@@ -45,7 +45,7 @@
     </Reference>
     <Reference Include="Exiled.API, Version=6.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Desktop\Exiled 6 .17\EXILED\Plugins\dependencies\Exiled.API.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\Exiled 6.19\EXILED\Plugins\dependencies\Exiled.API.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.CreditTags">
       <HintPath>..\..\..\..\Desktop\Exiled\EXILED\Plugins\Exiled.CreditTags.dll</HintPath>
@@ -56,8 +56,9 @@
     <Reference Include="Exiled.CustomRoles">
       <HintPath>..\..\..\..\Desktop\Exiled\EXILED\Plugins\Exiled.CustomRoles.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Events">
-      <HintPath>..\..\..\..\Desktop\Exiled 6 .17\EXILED\Plugins\Exiled.Events.dll</HintPath>
+    <Reference Include="Exiled.Events, Version=6.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Desktop\Exiled 6.19\EXILED\Plugins\Exiled.Events.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.Loader">
       <HintPath>..\..\..\..\Desktop\Exiled\SCP Secret Laboratory\PluginAPI\plugins\7777\Exiled.Loader.dll</HintPath>
@@ -115,6 +116,7 @@
     <Compile Include="EventHandler.cs" />
     <Compile Include="Features\AmmoStruct.cs" />
     <Compile Include="Features\ItemKit.cs" />
+    <Compile Include="Features\TempRoles.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
