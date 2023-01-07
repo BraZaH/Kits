@@ -118,11 +118,11 @@
                 }
                 Timing.CallDelayed(0.02f, () => 
                 {
-                    if (_itemKit.Candys.Count > 0)
+                    if (_itemKit.Candies.Count > 0)
                     {
                         if (Scp330Bag.TryGetBag(_player.ReferenceHub, out Scp330Bag bag))
                         {
-                            foreach (CandyKindID candy in _itemKit.Candys)
+                            foreach (CandyKindID candy in _itemKit.Candies)
                             {
                                 if (bag.Candies.Count >= 6)
                                     break;
@@ -145,7 +145,7 @@
                                     {
                                         _RemoveCandy = i;
                                     }
-                                    foreach (CandyKindID candy in _itemKit.Candys)
+                                    foreach (CandyKindID candy in _itemKit.Candies)
                                     {
                                         scp330.AddCandy(candy);
                                     }

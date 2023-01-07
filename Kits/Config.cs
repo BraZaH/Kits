@@ -35,7 +35,7 @@ namespace Kits
                             Amount = 200
                         }
                     },
-                    Candys = new List<CandyKindID>()
+                    Candies = new List<CandyKindID>()
                     {
                         CandyKindID.Rainbow,
                         CandyKindID.Yellow
